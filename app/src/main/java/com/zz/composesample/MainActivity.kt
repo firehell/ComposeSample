@@ -1,22 +1,21 @@
 package com.zz.composesample
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.zz.composesample.ui.ChatList
 import com.zz.composesample.ui.WeChatBottomBar
 import com.zz.composesample.ui.theme.WeComposeTheme
 
@@ -26,9 +25,20 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WeComposeTheme(WeComposeTheme.Theme.Light) {
-                var selectedTab by remember { mutableStateOf(0) }
-                WeChatBottomBar(selectedTab) { selectedTab = it }
+            Column() {
+                val viewModel:WechatViewModel = viewModel()
+                HorizontalPager(count = 4) { page ->
+                    when (page) {
+                        0-> ChatList(viewModel.chats)
+                        1-> Box(Modifier.fillMaxSize())
+                        2-> Box(Modifier.fillMaxSize())
+                        3-> Box(Modifier.fillMaxSize())
+                    }
+                }
+                WeComposeTheme(WeComposeTheme.Theme.Light) {
+                    var selectedTab by remember { mutableStateOf(0) }
+                    WeChatBottomBar(selectedTab) { selectedTab = it }
+                }
             }
         }
     }
