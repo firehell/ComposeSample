@@ -2,6 +2,7 @@ package com.zz.composesample.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rengwuxian.wecompose.data.Chat
+import com.zz.composesample.WechatViewModel
 import com.zz.composesample.ui.theme.WeComposeTheme
 
 @Composable
@@ -28,7 +31,8 @@ fun ChatList(chats: List<Chat>) {
     Column(
         Modifier
             .background(WeComposeTheme.colors.background)
-            .fillMaxSize()) {
+            .fillMaxSize()
+    ) {
         WeChatTopBar("微信") {
 
         }
@@ -49,8 +53,13 @@ fun ChatList(chats: List<Chat>) {
 
 @Composable
 private fun ChatListItem(chat: Chat) {
+    val viewModel: WechatViewModel = viewModel()
     Row(
-        Modifier.fillMaxWidth()
+        Modifier
+            .fillMaxWidth()
+            .clickable {
+                viewModel.startChat(chat)
+            }
     ) {
         Image(
             painterResource(chat.friend.avatar), chat.friend.name,
