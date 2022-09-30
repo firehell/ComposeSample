@@ -25,7 +25,13 @@ import com.zz.composesample.ui.theme.WeComposeTheme
 @Composable
 fun ChatList(chats: List<Chat>) {
     //内部是一个列表
-    Box(Modifier.background(WeComposeTheme.colors.background).fillMaxSize()) {
+    Column(
+        Modifier
+            .background(WeComposeTheme.colors.background)
+            .fillMaxSize()) {
+        WeChatTopBar("微信") {
+
+        }
         LazyColumn(Modifier.background(WeComposeTheme.colors.listItem)) {
             itemsIndexed(chats) { index, chat ->
                 ChatListItem(chat)
