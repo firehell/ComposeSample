@@ -20,19 +20,21 @@ import kotlin.math.roundToInt
 fun ChatPage() {
     val viewModel: WechatViewModel = viewModel()
     val offsetPercentX by animateFloatAsState(if (viewModel.chatting) 0f else 1f)
-    val offsetPercentY by animateFloatAsState(if (viewModel.chatting) 0f else 1f)
 
     Box(
         Modifier
-            .layout { measurable, constraints ->
-                val placeable = measurable.measure(constraints)
-                layout(placeable.width, placeable.height) {
-                    val offsetX = (offsetPercentX * placeable.width).roundToInt()
-                    val offsetY = (offsetPercentY * placeable.height).roundToInt()
-                    placeable.placeRelative(offsetX, offsetY)
-                }
-            }
+            .offsetPercent(offsetPercentX)
             .background(Color.Magenta)
             .fillMaxSize()
     )
 }
+
+fun Modifier.offsetPercent(offsetPercentX: Float = 0f, offsetPercentY: Float = 0f) =
+    this.layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        layout(placeable.width, placeable.height) {
+            val offsetX = (offsetPercentX * placeable.width).roundToInt()
+            val offsetY = (offsetPercentY * placeable.height).roundToInt()
+            placeable.placeRelative(offsetX, offsetY)
+        }
+    }
